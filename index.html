@@ -3,211 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Hỗ Trợ Sinh Viên Lập Trình</title>
+    <title>DevStudyHub - Nền Tảng Hỗ Trợ Học Lập Trình</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0284c7;
-            --dark: #0f172a;
-            --bg: #f8fafc;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: #334155; line-height: 1.6; }
-        
-        header { background: var(--dark); color: white; text-align: center; padding: 3rem 1rem 2rem; }
-        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; color: #38bdf8; }
-        
-        /* Thanh tìm kiếm */
-        .search-box { margin: 1.5rem auto 0; max-width: 500px; display: flex; gap: 10px; }
-        .search-box input { flex: 1; padding: 12px 15px; border-radius: 6px; border: none; outline: none; font-size: 1rem; }
-        
-        nav { background: #1e293b; display: flex; justify-content: center; gap: 15px; padding: 12px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
-        nav a { color: #f1f5f9; text-decoration: none; font-weight: 600; padding: 6px 12px; border-radius: 4px; transition: 0.2s; }
-        nav a:hover { background: var(--primary); }
 
-        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-        .section-title { font-size: 1.5rem; color: var(--dark); margin: 2rem 0 1rem; border-left: 5px solid var(--primary); padding-left: 10px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .card h3 { color: var(--primary); margin-bottom: 0.5rem; }
-        .card a { display: inline-block; margin-top: 1rem; background: var(--primary); color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 0.9rem; }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
 
-        /* Checklist lộ trình */
-        .checklist { list-style: none; }
-        .checklist li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .checklist input { width: 18px; height: 18px; cursor: pointer; }
+        /* Sidebar Navigation */
+        sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #475569;
+        }
 
-        /* Code Editor Mini */
-        .editor-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        textarea { width: 100%; height: 200px; padding: 10px; font-family: monospace; border: 1px solid #cbd5e1; border-radius: 4px; resize: none; background: #1e293b; color: #f8fafc; }
-        iframe { width: 100%; height: 200px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; }
+        sidebar h2 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        /* Đồng hồ Pomodoro */
-        .pomodoro { text-align: center; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-.timer { font-size: 3rem; font-weight: bold; color: var(--dark); margin: 1rem 0; }
-        .btn-timer { background: #10b981; color: white; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 4px; cursor: pointer; margin: 0 5px; }
-        .btn-reset { background: #ef4444; }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-        footer { text-align: center; padding: 2rem; background: var(--dark); color: #94a3b8; margin-top: 3rem; }
-        
+        .nav-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--accent);
+            color: #000;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #475569;
+        }
+
+        .section-page {
+            display: none;
+        }
+
+        .section-page.active {
+            display: block;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #475569;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tool 1: Code Playground */
+        .playground-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: 500px;
+        }
+
+        textarea.code-input {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #00ff66;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            resize: none;
+            font-size: 14px;
+        }
+
+        iframe.code-output {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 8px;
+            border: none;
+        }
+
+        button.btn {
+            background-color: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button.btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Tool 2: Pomodoro Timer */
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--accent);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Tool 3: Todo List */
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .todo-input-group input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: var(--bg-card);
+            color: #fff;
+        }
+
+        .todo-list {
+            list-style: none;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .todo-item.done {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .editor-container { grid-template-columns: 1fr; }
+            body {
+                flex-direction: column;
+            }
+            sidebar {
+                width: 100%;
+            }
+            .playground-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>STUDENT CODE HUB</h1>
-        <p>Nền tảng đồng hành cùng Sinh Viên CNTT</p>
-        <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Tìm khóa học, tài liệu, bài tập...">
-        </div>
-    </header>
+    <!-- Sidebar Menu -->
+    <sidebar>
+        <h2><i class="fa-solid fa-code"></i> DevStudyHub</h2>
+        <ul class="nav-links">
+            <li class="nav-item active" onclick="switchTab('dashboard')"><i class="fa-solid fa-house"></i> Trang Chủ</li>
+            <li class="nav-item" onclick="switchTab('playground')"><i class="fa-solid fa-terminal"></i> Thử Code Online</li>
+            <li class="nav-item" onclick="switchTab('roadmaps')"><i class="fa-solid fa-map"></i> Lộ Trình Học</li>
+            <li class="nav-item" onclick="switchTab('cheatsheet')"><i class="fa-solid fa-book"></i> Tra Cứu CheatSheet</li>
+            <li class="nav-item" onclick="switchTab('tools')"><i class="fa-solid fa-toolbox"></i> Tiện Ích Học Tập</li>
+        </ul>
+    </sidebar>
 
-    <nav>
-        <a href="#lo-trinh">Lộ Trình Học</a>
-        <a href="#compiler">Chạy Code Online</a>
-        <a href="#pomodoro">Góc Tập Trung</a>
-        <a href="#tai-lieu">Tài Nguyên Miễn Phí</a>
-    </nav>
+    <!-- Main Content Area -->
+    <main>
+        
+        <!-- Tab 1: Dashboard -->
+        <div id="dashboard" class="section-page active">
+            <div class="header">
+                <h1>Chào mừng bạn đến với DevStudyHub 👋</h1>
+                <p>Nơi hỗ trợ bạn trở thành Lập trình viên giỏi hơn mỗi ngày!</p>
+            </div>
 
-    <div class="container">
+            <div class="grid-2">
+                <!-- Pomodoro Card -->
+                <div class="card">
+                    <h3><i class="fa-solid fa-clock"></i> Đồng Hồ Tập Trung (Pomodoro)</h3>
+                    <div class="timer-display" id="timer">25:00</div>
+                    <div class="timer-controls">
+                        <button class="btn" onclick="startTimer()"><i class="fa-solid fa-play"></i> Bắt đầu</button>
+                        <button class="btn" style="background-color: var(--warning);" onclick="pauseTimer()"><i class="fa-solid fa-pause"></i> Tạm dừng</button>
+                        <button class="btn" style="background-color: var(--danger);" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>
+                    </div>
+                </div>
 
-        <!-- Lộ trình học kèm Checklist -->
-        <h2 id="lo-trinh" class="section-title">Lộ Trình & Tiến Độ Học Tập</h2>
-        <div class="grid">
-            <div class="card search-item">
-                <h3>1. Nền Tảng Lập Trình</h3>
-                <ul class="checklist">
-                    <li><input type="checkbox"> Nhập môn C / C++</li>
-                    <li><input type="checkbox"> Cấu trúc dữ liệu & Giải thuật</li>
-                    <li><input type="checkbox"> Lập trình Hướng đối tượng (OOP)</li>
-                </ul>
-            </div>
-            <div class="card search-item">
-                <h3>2. Lập Trình Web (Frontend)</h3>
-                <ul class="checklist">
-                    <li><input type="checkbox"> HTML5 & CSS3 Cơ bản</li>
-                    <li><input type="checkbox"> JavaScript ES6+</li>
-                    <li><input type="checkbox"> React.js hoặc Vue.js</li>
-                </ul>
-            </div>
-            <div class="card search-item">
-                <h3>3. Cơ Sở Dữ Liệu & Backend</h3>
-                <ul class="checklist">
-                    <li><input type="checkbox"> SQL (MySQL / PostgreSQL)</li>
-                    <li><input type="checkbox"> Node.js / Express</li>
-                    <li><input type="checkbox"> Thiết kế RESTful API</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Trình chạy Code HTML/CSS/JS Trực Tiếp -->
-        <h2 id="compiler" class="section-title">Trình Thực Hành Code Nhanh (HTML/CSS)</h2>
-        <div class="editor-container">
-            <div>
-                <p><b>Nhập code vào đây:</b></p>
-                <textarea id="htmlCode" placeholder="Nhập mã HTML vào đây..."></textarea>
-<button onclick="runCode()" style="margin-top: 10px; padding: 8px 15px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Chạy Code</button>
-            </div>
-            <div>
-                <p><b>Kết quả hiển thị:</b></p>
-                <iframe id="output"></iframe>
+                <!-- Todo List Card -->
+                <div class="card">
+                    <h3><i class="fa-solid fa-list-check"></i> Mục Tiêu Hôm Nay</h3>
+                    <div class="todo-input-group">
+                        <input type="text" id="todo-input" placeholder="Thêm bài tập / mục tiêu mới...">
+                        <button class="btn" onclick="addTodo()">Thêm</button>
+                    </div>
+                    <ul class="todo-list" id="todo-list">
+                        <!-- Todos rendered dynamically -->
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Công cụ Đồng hồ Pomodoro -->
-        <h2 id="pomodoro" class="section-title">Đồng Hồ Pomodoro (Tập Trung Học 25 Phút)</h2>
-        <div class="pomodoro">
-            <p>Phương pháp Pomodoro giúp bạn giữ sự tập trung cao độ khi giải thuật toán hoặc viết code.</p>
-            <div class="timer" id="timerDisplay">25:00</div>
-            <button class="btn-timer" onclick="startTimer()">Bắt Đầu</button>
-            <button class="btn-timer" onclick="pauseTimer()">Tạm Dừng</button>
-            <button class="btn-timer btn-reset" onclick="resetTimer()">Đặt Lại</button>
-        </div>
-
-        <!-- Tài liệu & Cộng đồng -->
-        <h2 id="tai-lieu" class="section-title">Tài Nguyên & Cộng Đồng</h2>
-        <div class="grid">
-            <div class="card search-item">
-                <h3>Luyện Code & Phỏng Vấn</h3>
-                <p>Nơi giải bài tập thuật toán hàng ngày cực tốt cho sinh viên.</p>
-                <a href="https://leetcode.com/" target="_blank">LeetCode</a>
-                <a href="https://www.hackerrank.com/" target="_blank">HackerRank</a>
+        <!-- Tab 2: Code Playground -->
+        <div id="playground" class="section-page">
+            <div class="header">
+                <h1><i class="fa-solid fa-terminal"></i> Trình Biên Dịch Code Live (HTML/CSS/JS)</h1>
+                <button class="btn" onclick="runCode()"><i class="fa-solid fa-play"></i> Chạy Code</button>
             </div>
-            <div class="card search-item">
-                <h3>Cộng Đồng Hỏi Đáp</h3>
-                <p>Hỏi đáp lỗi code và kết nối với các lập trình viên khác.</p>
-                <a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a>
-                <a href="https://viblo.asia/" target="_blank">Viblo Vietnam</a>
+            <div class="playground-container">
+                <textarea id="code-input" class="code-input" placeholder="Nhập code HTML/CSS/JS tại đây..."></textarea>
+                <iframe id="code-output" class="code-output"></iframe>
             </div>
         </div>
 
-    </div>
+        <!-- Tab 3: Roadmaps -->
+        <div id="roadmaps" class="section-page">
+            <div class="header">
+                <h1><i class="fa-solid fa-map"></i> Lộ Trình Học Lập Trình Chuẩn</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🌐 Frontend Developer</h3>
+                    <p>1. HTML/CSS/JavaScript Cơ bản</p>
+                    <p>2. Git & GitHub quản lý mã nguồn</p>
+                    <p>3. Framework: React.js hoặc Vue.js</p>
+                    <p>4. RESTful API & CSS Tailwind/Bootstrap</p>
+                </div>
+                <div class="card">
+                    <h3>⚙️ Backend Developer</h3>
+                    <p>1. Ngôn ngữ: Python / Node.js / Java / C#</p>
+                    <p>2. Cơ sở dữ liệu: SQL (MySQL, PostgreSQL)</p>
+                    <p>3. Thiết kế & Bảo mật API</p>
+                    <p>4. Cấu trúc dữ liệu & Thuật toán</p>
+                </div>
+                <div class="card">
+                    <h3>🐍 Lập trình Python & AI</h3>
+                    <p>1. Cú pháp Python cơ bản & OOP</p>
+                    <p>2. Thư viện: NumPy, Pandas (Xử lý dữ liệu)</p>
+                    <p>3. Học máy (Machine Learning) cơ bản</p>
+                </div>
+            </div>
+        </div>
 
-    <footer>
-        <p>© 2026 Student Code Hub - Được thiết kế dành riêng cho sinh viên lập trình</p>
-    </footer>
+        <!-- Tab 4: CheatSheet -->
+        <div id="cheatsheet" class="section-page">
+            <div class="header">
+                <h1><i class="fa-solid fa-book"></i> Tra Cứu Nhanh Lệnh / Cú Pháp</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fa-brands fa-git-alt"></i> Git Cơ Bản</h3>
+                    <p><code>git init</code> - Khởi tạo repo</p>
+                    <p><code>git add .</code> - Thêm tất cả thay đổi</p>
+                    <p><code>git commit -m "mess"</code> - Lưu phiên bản</p>
+                    <p><code>git push origin main</code> - Đẩy code lên GitHub</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-brands fa-js"></i> JS Array Methods</h3>
+                    <p><code>map()</code> - Tạo mảng mới từ mảng cũ</p>
+                    <p><code>filter()</code> - Lọc các phần tử thỏa điều kiện</p>
+                    <p><code>reduce()</code> - Tích lũy tính toán mảng</p>
+                </div>
+            </div>
+        </div>
 
-    <!-- JavaScript Xử Lý Chức Năng -->
+        <!-- Tab 5: Tools & Notes -->
+        <div id="tools" class="section-page">
+            <div class="header">
+                <h1><i class="fa-solid fa-toolbox"></i> Sổ Tay Ghi Chú Cá Nhân</h1>
+            </div>
+            <div class="card">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Ghi chú kiến thức quan trọng</h3>
+                <textarea id="study-notes" class="code-input" style="height: 250px; background: #1e293b; color: #fff;" placeholder="Nhập ghi chú học tập của bạn tại đây..."></textarea>
+                <button class="btn" onclick="saveNotes()">Lưu Ghi Chú</button>
+            </div>
+        </div>
+
+    </main>
+
     <script>
-        // 1. Chức năng chạy code
+        // Navigation Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Live Code Playground
+        const defaultCode = `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 40px; }
+    h1 { color: #38bdf8; }
+    button { padding: 10px 20px; background: #22c55e; border: none; color: white; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Xin chào Dev Tương Lai!</h1>
+  <p>Nhấp vào nút bên dưới để thử nghiệm JavaScript:</p>
+  <button onclick="alert('Chúc bạn học tốt lập trình!')">Bấm vào tôi</button>
+</body>
+</html>`;
+
+        document.getElementById('code-input').value = defaultCode;
+
         function runCode() {
-            const code = document.getElementById('htmlCode').value;
-            const output = document.getElementById('output').contentWindow.document;
-            output.open();
-            output.write(code);
-            output.close();
+            const code = document.getElementById('code-input').value;
+            const iframe = document.getElementById('code-output');
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(code);
+            iframe.contentWindow.document.close();
         }
+        runCode(); // Init default code
 
-        // 2. Chức năng Tìm kiếm
-        function filterCards() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('search-item');
-            for (let i = 0; i < cards.length; i++) {
-                let text = cards[i].innerText.toLowerCase();
-                if (text.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-}
-            }
-        }
-
-        // 3. Chức năng Pomodoro Timer
+        // Pomodoro Timer Logic
+        let timerInterval;
         let timeLeft = 25 * 60;
-        let timerId = null;
 
-        function updateDisplay() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById('timerDisplay').innerText = 
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function startTimer() {
-            if (timerId !== null) return;
-            timerId = setInterval(() => {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
                     timeLeft--;
-                    updateDisplay();
+                    updateTimerDisplay();
                 } else {
-                    clearInterval(timerId);
-                    alert("Hết 25 phút! Hãy nghỉ ngơi 5 phút nhé.");
+                    clearInterval(timerInterval);
+                    alert("Hết giờ tập trung! Hãy nghỉ ngơi 5 phút.");
                 }
             }, 1000);
         }
 
         function pauseTimer() {
-            clearInterval(timerId);
-            timerId = null;
+            clearInterval(timerInterval);
+            timerInterval = null;
         }
 
         function resetTimer() {
             pauseTimer();
             timeLeft = 25 * 60;
-            updateDisplay();
+            updateTimerDisplay();
+        }
+
+        // Todo List
+        let todos = JSON.parse(localStorage.getItem('dev_todos')) || [
+            { text: "Học 30 phút HTML/CSS", done: false },
+            { text: "Giải 1 bài tập trên LeetCode/HackerRank", done: true }
+        ];
+
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.done ? 'done' : ''}`;
+                li.innerHTML = `
+                    <span onclick="toggleTodo(${index})" style="cursor:pointer;">${todo.text}</span>
+                    <i class="fa-solid fa-trash" style="color:var(--danger); cursor:pointer;" onclick="deleteTodo(${index})"></i>
+                `;
+                list.appendChild(li);
+            });
+            localStorage.setItem('dev_todos', JSON.stringify(todos));
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            if (input.value.trim()) {
+                todos.push({ text: input.value.trim(), done: false });
+                input.value = '';
+                renderTodos();
+            }
+        }
+
+        function toggleTodo(index) {
+            todos[index].done = !todos[index].done;
+            renderTodos();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            renderTodos();
+        }
+        renderTodos();
+
+        // Notes Persist
+        document.getElementById('study-notes').value = localStorage.getItem('dev_notes') || '';
+        function saveNotes() {
+            const notes = document.getElementById('study-notes').value;
+            localStorage.setItem('dev_notes', notes);
+            alert('Đã lưu ghi chú thành công!');
         }
     </script>
 </body>
